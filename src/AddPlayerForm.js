@@ -12,7 +12,7 @@ function AddPlayerForm (props) {
                 ></input>
                 <button
                     type="submit"
-                    onClick={props.onPlayerSubmit}
+                    onClick={props.handleAddPlayer}
                 >Add Player
                 </button>
             </form>
