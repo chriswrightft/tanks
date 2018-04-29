@@ -28,6 +28,7 @@ class Scoreboard extends Component {
         this.resetTurnsTaken = this.resetTurnsTaken.bind(this);
         this.checkPlayerHits = this.checkPlayerHits.bind(this);
         this.endOfRound = this.endOfRound.bind(this);
+        this.reduceHealth = this.reduceHealth.bind(this);
     }
 
     render () {
@@ -99,7 +100,8 @@ class Scoreboard extends Component {
             id: this.state.playerId, // change from random number to remove risk of same id
             name: this.state.formValue,
             score: 0,
-            turnTaken: false
+            turnTaken: false,
+            health: 100
         };
 
         this.setState({
@@ -221,7 +223,25 @@ class Scoreboard extends Component {
     }
 
     checkPlayerHits () {
-        
+        for (const positionPlayer of this.state.players) {
+            for (const tilesHitPlayer of this.state.players) {
+                if (positionPlayer.currentPos === tilesHitPlayer.targetTile && positionPlayer.id !== tilesHitPlayer.id) {
+                    this.reduceHealth(positionPlayer);
+                }
+            }
+        }
+    }
+
+    reduceHealth (playerHit) {
+        this.setState({
+            players: this.state.players.map(function (player) {
+                if (playerHit.id === player.id) {
+                    playerHit.health -= 10;
+                    return playerHit;
+                }
+                return player;
+            })
+        });
     }
 
     endOfRound () {
